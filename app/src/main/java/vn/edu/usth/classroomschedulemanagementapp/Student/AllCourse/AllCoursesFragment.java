@@ -59,7 +59,7 @@ public class AllCoursesFragment extends Fragment {
         return view;
     }
 
-    // === QUAN TRỌNG: LOGIC KHÓA NÚT Ở ĐÂY ===
+    // Mở BottomSheet
     private void showCourseDetailBottomSheet(Subject subject, int position) {
         if (getContext() == null) {
             return;
@@ -84,14 +84,13 @@ public class AllCoursesFragment extends Fragment {
             tvDesc.setText("No description available.");
         }
 
-        // --- CHECK LOGIC ENROLL TẠI ĐÂY ---
+        // Logic enroll
         if (subject.isEnrolled()) {
-            // Nếu đã đăng ký: Đổi nút thành "Enrolled", màu xám, không bấm được
+            // Đổi nút thành "Enrolled", màu xám, không bấm được
             btnEnroll.setText("Enrolled");
             btnEnroll.setBackgroundColor(Color.GRAY);
             btnEnroll.setEnabled(false);
         } else {
-            // Nếu chưa đăng ký: Nút Enroll Now, màu xanh, bấm để đăng ký
             btnEnroll.setText("Enroll Now");
             btnEnroll.setBackgroundColor(Color.parseColor("#0A2A57"));
             btnEnroll.setEnabled(true);
@@ -123,7 +122,7 @@ public class AllCoursesFragment extends Fragment {
                     // Cập nhật trạng thái trong object Subject
                     subject.setEnrolled(true);
 
-                    // Cập nhật UI ngay lập tức trên BottomSheet (biến thành nút Enrolled)
+                    // Cập nhật UI ngay lập tức trên BottomSheet
                     btnEnroll.setText("Enrolled");
                     btnEnroll.setBackgroundColor(Color.GRAY);
                     btnEnroll.setEnabled(false);

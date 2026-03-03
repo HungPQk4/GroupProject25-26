@@ -95,7 +95,6 @@ public class AttendanceCheckAdapter extends RecyclerView.Adapter<AttendanceCheck
             }
         });
 
-        // Handle RadioGroup status
         holder.rgStatus.setOnCheckedChangeListener(null);
         if ("Present".equalsIgnoreCase(record.getStatus())) {
             holder.rbPresent.setChecked(true);

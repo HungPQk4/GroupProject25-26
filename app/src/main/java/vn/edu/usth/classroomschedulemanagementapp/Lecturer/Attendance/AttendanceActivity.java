@@ -51,13 +51,9 @@ public class AttendanceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_attendance);
 
-        // Get intent data with validation
         currentScheduleId = getIntent().getStringExtra("SCHEDULE_ID");
         String rawDate = getIntent().getStringExtra("SCHEDULE_DATE");
-        Log.d(TAG, " Received SCHEDULE_ID: " + currentScheduleId);
-        Log.d(TAG, " Received SCHEDULE_DATE: " + rawDate);
-
-        // CRITICAL: Validate scheduleId
+        //validate scheduleId
         if (currentScheduleId == null || currentScheduleId.isEmpty()) {
             Log.e(TAG, " CRITICAL ERROR: SCHEDULE_ID is null or empty!");
             Toast.makeText(this, "Error: Missing schedule ID", Toast.LENGTH_LONG).show();
@@ -302,7 +298,6 @@ public class AttendanceActivity extends AppCompatActivity {
     }
 
     private void showAddStudentBottomSheet() {
-        // CRITICAL: Check scheduleId before showing dialog
         if (currentScheduleId == null || currentScheduleId.isEmpty()) {
             Toast.makeText(this, "Error: Invalid schedule ID", Toast.LENGTH_SHORT).show();
             Log.e(TAG, " Cannot add student: scheduleId is null/empty");

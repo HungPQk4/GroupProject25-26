@@ -4,15 +4,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.List;
-
 import vn.edu.usth.classroomschedulemanagementapp.R;
 
-// Adapter hiển thị danh sách sinh viên trong lớp
 public class StudentListAdapter extends RecyclerView.Adapter<StudentListAdapter.ViewHolder> {
 
     private final List<StudentInfo> studentList;

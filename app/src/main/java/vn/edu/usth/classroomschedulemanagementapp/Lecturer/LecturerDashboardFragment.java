@@ -40,7 +40,6 @@ public class LecturerDashboardFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerItems);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        // Khi click vào môn học → chuyển sang danh sách lớp
         adapter = new LecturerSubjectAdapter(subjectList, subject -> {
             LecturerClassListFragment fragment = new LecturerClassListFragment();
             Bundle bundle = new Bundle();

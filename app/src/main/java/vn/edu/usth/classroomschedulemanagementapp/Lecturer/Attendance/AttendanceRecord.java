@@ -5,8 +5,8 @@ public class AttendanceRecord {
     private String scheduleId;
     private String studentId;
     private String studentCode;
-    private String studentName; // Dùng để hiển thị UI
-    private String status;      // "Present" hoặc "Absent"
+    private String studentName;
+    private String status;
     private long checkInTime;
 
     public AttendanceRecord(String id, String scheduleId, String studentId, String studentCode, String studentName, String status, long checkInTime) {
@@ -19,7 +19,6 @@ public class AttendanceRecord {
         this.checkInTime = checkInTime;
     }
 
-    // Getters và Setters
     public String getScheduleId() { return scheduleId; }
     public String getStudentName() { return studentName; }
     public String getStudentId() { return studentId; }

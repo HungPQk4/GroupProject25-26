@@ -26,7 +26,6 @@ import retrofit2.Response;
 import vn.edu.usth.classroomschedulemanagementapp.R;
 import vn.edu.usth.classroomschedulemanagementapp.RetrofitClient;
 
-// Màn hình 2: Danh sách LỚP HỌC của một môn, do giảng viên dạy
 public class LecturerClassListFragment extends Fragment {
 
     private static final String TAG = "LecturerClassList";
@@ -47,7 +46,6 @@ public class LecturerClassListFragment extends Fragment {
         rcvClasses = view.findViewById(R.id.rcvClasses);
         ImageButton btnBack = view.findViewById(R.id.btnBack);
 
-        // Nhận dữ liệu từ Bundle
         if (getArguments() != null) {
             subjectId = getArguments().getString("SUBJECT_ID", "");
             subjectName = getArguments().getString("SUBJECT_NAME", "");
@@ -56,7 +54,6 @@ public class LecturerClassListFragment extends Fragment {
 
         rcvClasses.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        // Khi click vào lớp → chuyển sang chi tiết lớp (danh sách sinh viên + tài liệu)
         adapter = new LecturerClassListAdapter(classList, lecturerClass -> {
             CourseDetailFragment fragment = new CourseDetailFragment();
             Bundle bundle = new Bundle();

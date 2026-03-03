@@ -50,10 +50,7 @@ public class LecturerAccountFragment extends Fragment {
 
         rcvCourses.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        // SỬA LỖI: Truyền đúng tham số cho MyCoursesAdapter
-        // (List môn học và một ClickListener trống để tránh lỗi runtime)
         adapter = new MyCoursesAdapter(courseList, subject -> {
-            // Có thể xử lý khi bấm vào môn học ở đây nếu cần
         });
         rcvCourses.setAdapter(adapter);
 
@@ -78,14 +75,12 @@ public class LecturerAccountFragment extends Fragment {
             return;
         }
 
-        // Lấy thông tin profile giảng viên
         RetrofitClient.getService().getProfile(userId).enqueue(new Callback<UserProfile>() {
             @Override
             public void onResponse(Call<UserProfile> call, Response<UserProfile> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     UserProfile profile = response.body();
                     tvName.setText(profile.getFullName());
-                    // staffCode sẽ là profile.id (vd: "lec-02") vì backend trả id khi studentCode null
                     String staffCode = profile.getStudentCode();
                     tvStaffId.setText("Staff ID: " + (staffCode != null ? staffCode : userId));
                     String dept = profile.getMajor();
@@ -98,7 +93,6 @@ public class LecturerAccountFragment extends Fragment {
             }
         });
 
-        // Lấy danh sách lớp giảng viên đang dạy (KHÔNG PHẢI getMyCourses cho student)
         RetrofitClient.getService().getLecturerCourses(userId).enqueue(new Callback<List<Subject>>() {
             @Override
             public void onResponse(Call<List<Subject>> call, Response<List<Subject>> response) {

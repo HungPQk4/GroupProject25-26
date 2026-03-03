@@ -2,7 +2,6 @@ package vn.edu.usth.classroomschedulemanagementapp.Lecturer;
 
 import com.google.gson.annotations.SerializedName;
 
-// Model cho lớp học thuộc một môn
 public class LecturerClass {
 
     @SerializedName("id")

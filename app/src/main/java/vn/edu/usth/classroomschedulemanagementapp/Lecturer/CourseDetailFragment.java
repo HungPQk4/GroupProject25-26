@@ -33,7 +33,6 @@ import vn.edu.usth.classroomschedulemanagementapp.ApiService;
 import vn.edu.usth.classroomschedulemanagementapp.R;
 import vn.edu.usth.classroomschedulemanagementapp.RetrofitClient;
 
-// Màn hình 3: Chi tiết lớp học — Danh sách sinh viên + Tài liệu (dùng chung theo môn)
 public class CourseDetailFragment extends Fragment {
 
     private static final String TAG = "LecturerCourseDetail";
@@ -65,23 +64,20 @@ public class CourseDetailFragment extends Fragment {
         rcvDocuments = view.findViewById(R.id.rcvDocuments);
         tvNoDocs = view.findViewById(R.id.tvNoDocs);
         tvAttTitle = view.findViewById(R.id.tvAttTitle);
-        rcvStudents = view.findViewById(R.id.rcvAttendance); // Dùng lại RecyclerView attendance cho student list
+        rcvStudents = view.findViewById(R.id.rcvAttendance);
 
-        // Nhận dữ liệu từ Bundle
         if (getArguments() != null) {
             classId = getArguments().getString("CLASS_ID", "");
             className = getArguments().getString("CLASS_NAME", "");
             subjectId = getArguments().getString("SUBJECT_ID", "");
             subjectName = getArguments().getString("SUBJECT_NAME", "");
 
-            // Hỗ trợ cả cách cũ (COURSE_NAME)
             if (className.isEmpty()) {
                 className = getArguments().getString("COURSE_NAME", "");
             }
         }
         tvDetailTitle.setText(className);
 
-        // Đổi tiêu đề "Attendance History" thành "Student List"
         tvAttTitle.setText("Student List");
 
         rcvDocuments.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -104,7 +100,6 @@ public class CourseDetailFragment extends Fragment {
 
         btnAddDoc.setOnClickListener(v -> showAddDocumentDialog());
 
-        // Tải danh sách sinh viên
         if (!classId.isEmpty()) {
             loadStudents();
             loadDocuments();
@@ -113,7 +108,6 @@ public class CourseDetailFragment extends Fragment {
         return view;
     }
 
-    // Tải danh sách sinh viên trong lớp
     private void loadStudents() {
         Log.d(TAG, "Loading students for class: " + classId);
 
@@ -138,7 +132,6 @@ public class CourseDetailFragment extends Fragment {
         });
     }
 
-    // Dialog thêm tài liệu (giữ nguyên logic cũ)
     private void showAddDocumentDialog() {
         View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_add_document, null);
         EditText edtTitle = dialogView.findViewById(R.id.edtDocTitle);
@@ -205,9 +198,7 @@ public class CourseDetailFragment extends Fragment {
         });
     }
 
-    // Upload tài liệu
     private void handleUploadDocument(String title, String url, AlertDialog dialog) {
-        // Lấy uploaderId từ SharedPreferences
         SharedPreferences prefs = requireContext().getSharedPreferences("AppPrefs", Context.MODE_PRIVATE);
         String uploaderId = prefs.getString("USER_ID", "");
 
@@ -224,7 +215,7 @@ public class CourseDetailFragment extends Fragment {
                 if (response.isSuccessful()) {
                     Toast.makeText(getContext(), "Upload Successful!", Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
-                    loadDocuments(); // Refresh the list
+                    loadDocuments(); 
                 } else {
                     Toast.makeText(getContext(), "Error: " + response.code(), Toast.LENGTH_SHORT).show();
                 }

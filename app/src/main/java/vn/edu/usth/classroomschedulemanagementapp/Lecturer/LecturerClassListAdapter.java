@@ -5,21 +5,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.List;
-
 import vn.edu.usth.classroomschedulemanagementapp.R;
 
-// Adapter hiển thị danh sách LỚP HỌC của một môn
 public class LecturerClassListAdapter extends RecyclerView.Adapter<LecturerClassListAdapter.ViewHolder> {
 
     private final List<LecturerClass> classList;
     private final OnClassClickListener listener;
 
-    // Interface để bắt sự kiện click
     public interface OnClassClickListener {
 
         void onClassClick(LecturerClass lecturerClass);

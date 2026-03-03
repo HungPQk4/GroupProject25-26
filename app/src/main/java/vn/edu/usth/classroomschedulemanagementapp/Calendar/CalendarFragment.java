@@ -206,16 +206,13 @@ public class CalendarFragment extends Fragment {
             }
         });
 
-        // Initial Selection
         selectDate(LocalDate.now());
-
-        // GỌI API LẤY DỮ LIỆU THẬT
         fetchScheduleFromApi();
 
         return view;
     }
 
-    // --- HÀM GỌI API ---
+    // call API
     private void fetchScheduleFromApi() {
         SharedPreferences prefs = requireActivity().getSharedPreferences("AppPrefs", Context.MODE_PRIVATE);
         String userId = prefs.getString("USER_ID", "");

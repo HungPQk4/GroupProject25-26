@@ -45,7 +45,6 @@ public class LecturerMainActivity extends AppCompatActivity {
 
             headerView.setOnClickListener(v -> {
                 drawerLayout.closeDrawer(GravityCompat.START);
-                // Chuyển sang fragment hồ sơ giảng viên
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragment_container, new LecturerAccountFragment())
                         .addToBackStack(null)
@@ -102,7 +101,6 @@ public class LecturerMainActivity extends AppCompatActivity {
             return;
         }
 
-        // Sử dụng chung API getProfile vì server trả về linh hoạt theo userId
         RetrofitClient.getService().getProfile(userId).enqueue(new Callback<UserProfile>() {
             @Override
             public void onResponse(Call<UserProfile> call, Response<UserProfile> response) {

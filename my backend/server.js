@@ -284,8 +284,8 @@ app.get('/api/schedule/:userId', async (req, res) => {
         SELECT 
           s.id AS "scheduleId",
           c.name AS "subjectName", 
-          TO_CHAR(s."startTime", 'YYYY-MM-DD"T"HH24:MI:SS"Z"') AS "startTime", 
-          TO_CHAR(s."endTime", 'YYYY-MM-DD"T"HH24:MI:SS"Z"') AS "endTime", 
+          TO_CHAR(s."startTime" AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Ho_Chi_Minh', 'YYYY-MM-DD"T"HH24:MI:SS"Z"') AS "startTime", 
+          TO_CHAR(s."endTime" AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Ho_Chi_Minh', 'YYYY-MM-DD"T"HH24:MI:SS"Z"') AS "endTime", 
           COALESCE(r.name, 'N/A') AS "roomName", 
           COALESCE(up."fullName", 'Lecturer') AS "lecturerName",
           s.category AS "category"
@@ -302,8 +302,8 @@ app.get('/api/schedule/:userId', async (req, res) => {
         SELECT
           s.id AS "scheduleId",
           c.name AS "subjectName", 
-          TO_CHAR(s."startTime", 'YYYY-MM-DD"T"HH24:MI:SS"Z"') AS "startTime", 
-          TO_CHAR(s."endTime", 'YYYY-MM-DD"T"HH24:MI:SS"Z"') AS "endTime", 
+          TO_CHAR(s."startTime" AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Ho_Chi_Minh', 'YYYY-MM-DD"T"HH24:MI:SS"Z"') AS "startTime", 
+          TO_CHAR(s."endTime" AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Ho_Chi_Minh', 'YYYY-MM-DD"T"HH24:MI:SS"Z"') AS "endTime", 
           COALESCE(r.name, 'N/A') AS "roomName", 
           COALESCE(up."fullName", 'Lecturer') AS "lecturerName",
           s.category AS "category"
@@ -347,7 +347,6 @@ app.get('/api/profile/:userId', async (req, res) => {
     const result = await client.query(query, [userId]);
 
     if (result.rows.length === 0) {
-      // Nếu không tìm thấy trong user_profile, thử tìm trong bảng User cơ bản
       const userQuery = 'SELECT id, "fullName", role FROM "User" WHERE id = $1';
       const userResult = await client.query(userQuery, [userId]);
 
@@ -357,7 +356,6 @@ app.get('/api/profile/:userId', async (req, res) => {
       return res.json(userResult.rows[0]);
     }
 
-    // Trả về kết quả - dùng id làm staffCode nếu studentCode là null (cho Lecturer)
     const profile = result.rows[0];
     if (!profile.studentCode) {
       profile.studentCode = profile.id;
@@ -399,13 +397,12 @@ app.get('/api/grades/:studentId', async (req, res) => {
   }
 });
 
-// Nhập điểm (Có validate không vượt quá 20)
+// Nhập điểm
 app.post('/api/grades/submit', async (req, res) => {
   const { enrollmentId, itemId, score } = req.body;
 
-  // Validate điểm số không vượt quá 20
   if (score > 20) {
-    return res.status(400).json({ message: "Điểm không hợp lệ: Điểm số không được vượt quá 20!" });
+    return res.status(400).json({ message: "Grade > 20!" });
   }
 
   try {
@@ -506,10 +503,10 @@ app.get('/api/attendance', async (req, res) => {
     const query = `
       SELECT 
         a.status,
-        TO_CHAR(a.check_in_time, 'YYYY-MM-DD"T"HH24:MI:SS"Z"') AS "checkInTime",
-        TO_CHAR(cs."startTime"::date, 'YYYY-MM-DD') AS "scheduleDate",
-        TO_CHAR(cs."startTime", 'HH24:MI') AS "startTime",
-        TO_CHAR(cs."endTime", 'HH24:MI') AS "endTime"
+        TO_CHAR(a.check_in_time AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Ho_Chi_Minh', 'YYYY-MM-DD"T"HH24:MI:SS"Z"') AS "checkInTime",
+        TO_CHAR((cs."startTime" AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Ho_Chi_Minh')::date, 'YYYY-MM-DD') AS "scheduleDate",
+        TO_CHAR(cs."startTime" AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Ho_Chi_Minh', 'HH24:MI') AS "startTime",
+        TO_CHAR(cs."endTime" AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Ho_Chi_Minh', 'HH24:MI') AS "endTime"
       FROM attendances a
       JOIN class_schedule cs ON a.schedule_id = cs.id
       WHERE cs."classId" = $1 AND a.student_id = $2

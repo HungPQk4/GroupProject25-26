@@ -55,22 +55,16 @@ public class StudentMainActivity extends AppCompatActivity implements Navigation
 
         navigationView.setNavigationItemSelectedListener(this);
 
-        // --- XỬ LÝ HEADER (Click & Hiển thị thông tin) ---
         if (navigationView.getHeaderCount() > 0) {
             View headerView = navigationView.getHeaderView(0);
 
-            // 1. Gọi hàm cập nhật thông tin lên Header từ API
             updateHeaderInfo(headerView);
 
-            // 2. Bắt sự kiện click vào Header để mở AccountInfo
             headerView.setOnClickListener(v -> {
-                // Đóng menu
                 drawerLayout.closeDrawer(GravityCompat.START);
 
-                // Chuyển sang màn hình Account Info
                 replaceFragment(new AccountInfoFragment());
 
-                // Bỏ chọn các item ở menu dưới (để người dùng biết đang ở màn hình khác)
                 int size = navigationView.getMenu().size();
                 for (int i = 0; i < size; i++) {
                     navigationView.getMenu().getItem(i).setChecked(false);
@@ -78,24 +72,23 @@ public class StudentMainActivity extends AppCompatActivity implements Navigation
             });
         }
 
-        // Mặc định mở màn hình Calendar khi vào App
+        // Mặc định mở màn hình Calendar
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new CalendarFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_calender);
         }
     }
 
-    // Hàm gọi API và điền thông tin vào Header
+    // gọi API và điền thông tin vào Header
     private void updateHeaderInfo(View headerView) {
         SharedPreferences prefs = getSharedPreferences("AppPrefs", Context.MODE_PRIVATE);
         String userId = prefs.getString("USER_ID", "");
 
-        // Ánh xạ các View trong Header (đảm bảo ID khớp với file nav_header_main.xml)
         TextView tvName = headerView.findViewById(R.id.text_user_name);
         TextView tvId = headerView.findViewById(R.id.tv_user_id);
         TextView tvMajor = headerView.findViewById(R.id.tv_user_major);
 
-        // Lấy tên tạm từ SharedPreferences (hiển thị trước khi API tải xong)
+        // Lấy tên tạm từ SharedPreferences
         String savedName = prefs.getString("FULL_NAME", "Student");
         if (tvName != null) {
             tvName.setText(savedName);
@@ -105,14 +98,13 @@ public class StudentMainActivity extends AppCompatActivity implements Navigation
             return;
         }
 
-        // Gọi API lấy Profile (để có Major và StudentCode chính xác)
+        // lấy Profile
         RetrofitClient.getService().getProfile(userId).enqueue(new Callback<UserProfile>() {
             @Override
             public void onResponse(Call<UserProfile> call, Response<UserProfile> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     UserProfile user = response.body();
 
-                    // Cập nhật giao diện với dữ liệu thật từ Server
                     if (tvName != null) {
                         tvName.setText(user.getFullName());
                     }
@@ -128,7 +120,6 @@ public class StudentMainActivity extends AppCompatActivity implements Navigation
             @Override
             public void onFailure(Call<UserProfile> call, Throwable t) {
                 // Nếu lỗi mạng, giữ nguyên tên đã load từ SharedPreferences
-                // Có thể log lỗi ra Logcat nếu cần: t.printStackTrace();
             }
         });
     }
@@ -155,7 +146,6 @@ public class StudentMainActivity extends AppCompatActivity implements Navigation
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, fragment);
-        // Thêm vào back stack để nút Back điện thoại hoạt động đúng
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }

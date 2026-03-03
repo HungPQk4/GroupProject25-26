@@ -16,7 +16,7 @@ public class GradeAdapter extends RecyclerView.Adapter<GradeAdapter.ViewHolder> 
 
     @NonNull @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_grade, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.student_item_grade, parent, false);
         return new ViewHolder(view);
     }
 
